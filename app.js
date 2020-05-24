@@ -1,76 +1,57 @@
-const posts = [
-  { title: 'Post One', body: 'This is post one' },
-  { title: 'Post Two', body: 'This is post two' },
-];
+document.getElementById('button1').addEventListener('click', getText);
+document.getElementById('button2').addEventListener('click', getJson);
+document.getElementById('button3').addEventListener('click', getExternal);
 
-/* function createPost(post) {
-    setTimeout(function() {
-        posts.push(post);
-    }, 2000);
-}
 
-function getPosts() {
-    setTimeout(function() {
-        let output = '';
-        posts.forEach(function(post){
-            output += `<li>${post.title}</li>`;
-        });
-        document.body.innerHTML = output;
-    }, 1000);
-}
-
-createPost({title: 'Post Three', body: 'This is post three'});
-
-getPosts(); */
-
-/* function createPost(post, callback) {
-  setTimeout(function () {
-    posts.push(post);
-    callback();
-  }, 2000);
-}
-
-function getPosts() {
-  setTimeout(function () {
-    let output = '';
-    posts.forEach(function (post) {
-      output += `<li>${post.title}</li>`;
+// Get local text file data
+function getText() {
+  fetch('test.txt')
+    .then(function(res){
+      return res.text();
+    })
+    .then(function(data){
+      console.log(data);
+      document.getElementById('output').innerHTML = data;
+    })
+    .catch(function(err){
+      console.log(err);
     });
-    document.body.innerHTML = output;
-  }, 1000);
 }
 
-createPost({ title: 'Post Three', body: 'This is post three' }, getPosts);
- */
+// Get local json data
+function getJson() {
+  fetch('posts.json')
+    .then(function(res){
+      return res.json();
+    })
+    .then(function(data){
+      console.log(data);
+      let output = '';
+      data.forEach(function(post) {
+        output += `<li>${post.title}</li>`;
+      });
+      document.getElementById('output').innerHTML = output;
+    })
+    .catch(function(err){
+      console.log(err);
+    });
+}
 
-
- function createPost(post) {
-   return new Promise(function(resolve, reject){
-      setTimeout(function() {
-        posts.push(post);
-        
-        const error = true;
-
-        if(!error) {
-          resolve();
-        } else {
-          reject('Error: Something went wrong!');
-        }
-      }, 2000);
-   });
-   
- }
-
- function getPosts() {
-   setTimeout(function () {
-     let output = '';
-     posts.forEach(function (post) {
-       output += `<li>${post.title}</li>`;
-     });
-     document.body.innerHTML = output;
-   }, 1000);
- }
-
- createPost({ title: 'Post Three', body: 'This is post three' }).then(getPosts).catch(function(err){
-   console.log(err);
- });
+// Get from external API
+function getExternal() {
+  fetch('https://api.github.com/users')
+    .then(function(res){
+      return res.json();
+    })
+    .then(function(data){
+      console.log(data);
+      let output = '';
+      data.forEach(function(user) {
+        output += `<li>${user.login}</li>`;
+      });
+      document.getElementById('output').innerHTML = output;
+    })
+    .catch(function(err){
+      console.log(err);
+    });
+}
