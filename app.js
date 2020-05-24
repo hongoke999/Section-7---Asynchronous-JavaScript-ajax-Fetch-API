@@ -1,55 +1,76 @@
-const http = new easyHTTP;
+const posts = [
+  { title: 'Post One', body: 'This is post one' },
+  { title: 'Post Two', body: 'This is post two' },
+];
 
-//  Get Posts
-/* const posts = http.get('https://jsonplaceholder.typicode.com/posts', function(err, posts) {
-  if(err) {
-    console.log(err);
-  } else {
-    console.log(posts);
-  }
-}); */
+/* function createPost(post) {
+    setTimeout(function() {
+        posts.push(post);
+    }, 2000);
+}
 
-//  Get Single Post
-/* const posts = http.get('https://jsonplaceholder.typicode.com/posts/1', function(err, posts) {
-  if(err) {
-    console.log(err);
-  } else {
-    console.log(posts);
-  }
-}); */
+function getPosts() {
+    setTimeout(function() {
+        let output = '';
+        posts.forEach(function(post){
+            output += `<li>${post.title}</li>`;
+        });
+        document.body.innerHTML = output;
+    }, 1000);
+}
+
+createPost({title: 'Post Three', body: 'This is post three'});
+
+getPosts(); */
+
+/* function createPost(post, callback) {
+  setTimeout(function () {
+    posts.push(post);
+    callback();
+  }, 2000);
+}
+
+function getPosts() {
+  setTimeout(function () {
+    let output = '';
+    posts.forEach(function (post) {
+      output += `<li>${post.title}</li>`;
+    });
+    document.body.innerHTML = output;
+  }, 1000);
+}
+
+createPost({ title: 'Post Three', body: 'This is post three' }, getPosts);
+ */
 
 
-//  Create Data
-const data = {
-  title: 'Custome post',
-  body: 'This is a custom post'
-};
+ function createPost(post) {
+   return new Promise(function(resolve, reject){
+      setTimeout(function() {
+        posts.push(post);
+        
+        const error = true;
 
-//  Create Post
-/* http.post('https://jsonplaceholder.typicode.com/posts', data, function(err, post){
-  if(err) {
-    console.log(err);
-  } else {
-    console.log(post);
-  }
-}); */
+        if(!error) {
+          resolve();
+        } else {
+          reject('Error: Something went wrong!');
+        }
+      }, 2000);
+   });
+   
+ }
 
-//  Update Post
-/* http.put('https://jsonplaceholder.typicode.com/posts/1', data, function(err, post){
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(post);
-  }
-}); */
+ function getPosts() {
+   setTimeout(function () {
+     let output = '';
+     posts.forEach(function (post) {
+       output += `<li>${post.title}</li>`;
+     });
+     document.body.innerHTML = output;
+   }, 1000);
+ }
 
-//  Delete Post
-http.delete('https://jsonplaceholder.typicode.com/posts/1',  
-function (err,response) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(response);
-    }
-  }
-);
+ createPost({ title: 'Post Three', body: 'This is post three' }).then(getPosts).catch(function(err){
+   console.log(err);
+ });
